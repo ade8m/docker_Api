@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const dockerode = require('dockerode')(); // "dockerode" is a docker remote api nodejs module 
 const authRoute = require('./Routes/auth');
+const containerRoutes = require('./Routes/container');
+const imageRoutes = require('./Routes/img');
+
                                         
 //database connection
 
@@ -25,6 +28,8 @@ try{
 app.use(express.json());
 app.use(bodyParser.json());
 app.use("/auth",authRoute);
+app.use('/containers', containerRoutes);
+app.use('/images', imageRoutes);
 
 
 module.exports= app;

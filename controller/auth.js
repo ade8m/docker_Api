@@ -39,7 +39,7 @@ const  Jwt  =require("jsonwebtoken");
             token: token
         });
     } catch (error) {
-        throw error;
+        throw error
     }
 
  }

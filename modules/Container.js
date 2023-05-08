@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Containerschema = mongoose.Schema({
-    ContainerName:{type:string},
-    ImgName:{type:string},
-    Port:{type:Number},
-    Volume:{type:Number},
-    Networking:{type:String}
+    ContainerName:{type:String},
+    ImgName:{type:String},
+    portNumber:{type:Number},
+    cmd:{type:String},
+
 
 });
 module.exports = mongoose.model('Container',Containerschema);
