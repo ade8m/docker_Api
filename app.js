@@ -28,7 +28,7 @@ try{
 app.use(express.json());
 app.use(bodyParser.json());
 app.use("/auth",authRoute);
-app.use('/containers', containerRoutes);
+app.use('/container', containerRoutes);
 app.use('/images', imageRoutes);
 
 
