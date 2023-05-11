@@ -4,9 +4,17 @@ const docker1 = new Docker({ socketPath: '/var/run/docker.sock' });
 const docker = new Docker();
 
 exports.createContainer = (req, res) => {
+  const imageName = req.body.imageName;
+  const containerName = req.body.containerName;
+
+  // Check if the required fields are present
+  if (!imageName || !containerName) {
+    return res.status(400).json({ error: 'Image name and container name are required' });
+  }
+
 
   const containerOptions = {
-    Image: 'nginx:latest',
+    Image: imageName,
     Cmd: [],
     AttachStdin: false,
     AttachStdout: true,
@@ -27,15 +35,32 @@ exports.createContainer = (req, res) => {
 container.start((err) => {
 if (err) {
  console.error('Error starting container:', err);
- return;
+ return res.status(500).json({ error: 'Error starting container' });
 }
 
-console.log('Container started:', container.id);
-res.status(200).json({ message: 'Container started successfully' });
+//save container to the database
+const newContainer = new Container({
+  containerId: container.id,
+  ContainerName: containerName,
+  ImgName: imageName,
+  
+})
+newContainer.save()
+      .then((savedContainer) => {
+        console.log('Container saved:', savedContainer);
+        res.status(200).json({ message: 'Container started and saved successfully' });
+      })
+      .catch((err) => {
+        console.error('Error saving container:', err);
+        res.status(500).json({ error: 'Error saving container' });
+      });
 });
 });
+
+  };
+
  
-};
+
 
 
 // Route handler to stop a container
