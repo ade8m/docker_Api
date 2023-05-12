@@ -74,12 +74,32 @@ newContainer.save()
 });
 
   };
+// start container
+  exports.startContainer = (req, res) => {
+    const containerId = req.params.containerId; // Assuming the container ID is passed as a URL parameter
+  
+    // Find the container by ID
+    const container = docker.getContainer(containerId);
+  
+    // Start the container
+    container.start((err) => {
+      if (err) {
+      
+        res.status(500).json({ error: 'Error starting container' });
+        return;
+      }
+  
+      console.log('Container started:', containerId);
+      res.status(200).json({ message: 'Container started successfully' });
+    });
+  };
 
  
 
 
 
 // Route handler to stop a container
+
 exports.stopContainer = (req, res) => {
   const containerId = req.params.containerId; // Assuming the container ID is passed as a URL parameter
 
@@ -100,6 +120,7 @@ exports.stopContainer = (req, res) => {
 };
 
 //Get All Containers from database 
+
 exports.getAllContainers =(req,res) =>{
   Container.find()
   .then((containers) =>{
@@ -109,3 +130,86 @@ exports.getAllContainers =(req,res) =>{
     res.status(500).json({ error: 'Error retrieving containers' });
   });
   };
+
+
+  //Route handler to get the list of started containers
+
+  exports.getStartedContainers = (req, res) => {
+    docker.listContainers({all:true ,filters:{status:['running']}} ,(err,containers) => {
+      if(err){
+        console.error('Error retrieving started containers:', err);
+      res.status(500).json({ error: 'Error retrieving started containers' });
+      return;
+      }
+      const startedContainers = containers.map((containerInfo) => {
+        return {
+          containerId: containerInfo.Id,
+          containerName: containerInfo.Names[0].substring(1), // Remove the leading '/'
+          imageName: containerInfo.Image,
+        };
+      });
+  
+      res.status(200).json(startedContainers);
+    });
+    };
+
+    //stop All containers:
+
+    exports.stopAllContainers = (req, res) => {
+      docker.listContainers({ all: true }, (err, containers) => {
+        if (err) {
+          console.error('Error retrieving containers:', err);
+          return res.status(500).json({ error: 'Error retrieving containers' });
+        }
+    
+        const containerIds = containers.map((containerInfo) => containerInfo.Id);
+    
+        Promise.all(
+          containerIds.map((containerId) => {
+            const container = docker.getContainer(containerId);
+            return container.stop();
+          })
+        )
+          .then(() => {
+            console.log('All containers stopped successfully');
+            res.status(200).json({ message: 'All containers stopped successfully' });
+          })
+          .catch((err) => {
+            console.error('Error stopping containers:', err);
+            res.status(500).json({ error: 'Error stopping containers' });
+          });
+      });
+    };
+    
+  // Remove docker container 
+  
+  exports.DeleteContainer =(req,res) =>{
+    const containerId = req.params.containerId;
+    const container = docker.getContainer(containerId);
+    container.remove({force: true},(err) =>{
+      if(err){
+        res.status(500).json({ error: 'Error removing container' });
+        return;
+      }
+      console.log('Container removed:', containerId);
+
+      // Remove the container from the database
+      Container.findOneAndDelete({ containerId: containerId }, (err, deletedContainer) => {
+        if (err) {
+          console.error('Error removing container from database:', err);
+          res.status(500).json({ error: 'Error removing container from database' });
+          return;
+        }
+  
+        if (!deletedContainer) {
+          res.status(404).json({ error: 'Container not found in the database' });
+          return;
+        }
+  
+        console.log('Container removed from the database:', deletedContainer);
+        res.status(200).json({ message: 'Container removed successfully' });
+      });
+    });
+    };
+  
+  
