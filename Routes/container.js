@@ -4,6 +4,7 @@ const containerController = require('../controller/containerCont.js');
 
 router.post('/Add', containerController.createContainer);
 router.get('/:containerId/stop', containerController.stopContainer);
+router.get('/AllContainers', containerController.getAllContainers);
 
 
 module.exports = router;
