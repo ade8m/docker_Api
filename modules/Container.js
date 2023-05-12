@@ -9,6 +9,14 @@ const Containerschema = mongoose.Schema({
     containerId:{
       type:String,
       required:true 
+    },
+    RamUsage:{
+      type:String,
+      required:true 
+    },
+    DiskUsage:{
+      type:String,
+      required:true 
     }
 });
 module.exports = mongoose.model('Container',Containerschema);
@@ -19,21 +27,4 @@ module.exports = mongoose.model('Container',Containerschema);
 
 
 
-// logic of stop container
-/*
-exports.stopContainer =(req,res) =>{
-    const config={
-nameC:req.body.ContainerName,
-    }
-    try{
-   const container = docker.getContainer(config);
- 
-     container.stop(); 
 
-   console.log('Container stopped successfully.');
- 
-    }catch(error) {
-   console.error('Error stopping container:', error);
-   throw error;
- }
-};*/ 

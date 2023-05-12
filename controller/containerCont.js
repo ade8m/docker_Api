@@ -31,18 +31,34 @@ exports.createContainer = (req, res) => {
     };
  // Container created successfully
  console.log('Container created:', container.id);
+
  // Start the container
 container.start((err) => {
 if (err) {
  console.error('Error starting container:', err);
  return res.status(500).json({ error: 'Error starting container' });
 }
+/*
+// Get stats of container use stats() methode with dockerode API
+container.stats({ stream: false }, (err, stats) => {
+  if (err) {
+    console.error('Error retrieving container stats:', err);
+    return res.status(500).json({ error: 'Error retrieving container stats' });
+  }
 
+ // Parse the container statistics to get RAM and disk usage
+ const memoryStats = stats.memory_stats;
+  const ramUsage = memoryStats.usage;
+  const diskUsage = stats.disk_usage;
+});
+*/
 //save container to the database
 const newContainer = new Container({
   containerId: container.id,
   ContainerName: containerName,
   ImgName: imageName,
+  //RamUsage:ramUsage,
+ // DiskUsage: diskUsage,
   
 })
 newContainer.save()
@@ -82,3 +98,14 @@ exports.stopContainer = (req, res) => {
     res.status(200).json({ message: 'Container stopped successfully' });
   });
 };
+
+//Get All Containers from database 
+exports.getAllContainers =(req,res) =>{
+  Container.find()
+  .then((containers) =>{
+    res.status(200).json(containers);
+  })
+  .catch ((err) =>{
+    res.status(500).json({ error: 'Error retrieving containers' });
+  });
+  };
