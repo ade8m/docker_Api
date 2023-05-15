@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Imageschema = mongoose.Schema({
-ImgName:{type:string},
+ImgName:{type:String},
 version:{type:Number},
 description:{type:String},
 Dockerfile:{type:String},
-SourceCode:{type:string},
+SourceCode:{type:String},
 Size:{type:Number}
 });
 module.exports = mongoose.model('Image',Imageschema);

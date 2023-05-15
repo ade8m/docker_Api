@@ -10,14 +10,14 @@ const Containerschema = mongoose.Schema({
       type:String,
       required:true 
     },
-    RamUsage:{
+    /*RamUsage:{
       type:String,
       required:true 
     },
     DiskUsage:{
       type:String,
       required:true 
-    }
+    }*/
 });
 module.exports = mongoose.model('Container',Containerschema);
 
