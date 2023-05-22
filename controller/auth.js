@@ -14,6 +14,7 @@ const  Jwt  =require("jsonwebtoken");
         password:hash,
     })
     await newUser.save()
+    console.log("user add");
     res.status(200).send("user added successfully!")
     } catch (error) {
         throw error;

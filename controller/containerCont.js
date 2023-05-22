@@ -92,6 +92,7 @@ newContainer.save()
       console.log('Container started:', containerId);
       res.status(200).json({ message: 'Container started successfully' });
     });
+    
   };
 
  
@@ -151,6 +152,7 @@ exports.getAllContainers =(req,res) =>{
   
       res.status(200).json(startedContainers);
     });
+    
     };
 
     //stop All containers:
