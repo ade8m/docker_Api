@@ -36,7 +36,7 @@ module.exports= app;
 
 
 //server connection
-app.listen(3000,()=>{
+app.listen(3001,()=>{
     connect();
 console.log("connected to backend!");
 });
