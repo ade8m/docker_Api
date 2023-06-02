@@ -15,9 +15,9 @@ function navbar() {
             <Nav.Link href="#features">Docker</Nav.Link>
             <Nav.Link href="#pricing">Deployment</Nav.Link>
             <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.1">Images</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
-                Another action
+                 Containers
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
               <NavDropdown.Divider />

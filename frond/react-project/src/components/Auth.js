@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
 
 const LoginForm = () => {
   const [authMode, setAuthMode] = useState("signin");
@@ -6,6 +8,8 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [serveraddress, setServeraddress] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
 
   const changeAuthMode = () => {
     setAuthMode(authMode === "signin" ? "signup" : "signin");
@@ -55,6 +59,8 @@ const LoginForm = () => {
           setPassword("");
           setServeraddress("");
           setEmail("");
+
+          navigate('/');
         })
         .catch((error) => {
           // Handle any errors
@@ -158,7 +164,9 @@ const LoginForm = () => {
             </div>
           )}
           <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary" onClick={() =>{
+              navigate("/");
+            }}>
               {authMode === "signin" ? "Sign In" : "Sign Up"}
             </button>
           </div>
