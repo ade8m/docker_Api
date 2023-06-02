@@ -76,7 +76,7 @@ newContainer.save()
   };
 // start container
   exports.startContainer = (req, res) => {
-    const containerId = req.body.containerId; 
+    const containerId = req.params.containerId; 
   
     // Find the container by ID
     const container = docker.getContainer(containerId);

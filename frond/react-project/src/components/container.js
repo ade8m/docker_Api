@@ -17,9 +17,9 @@ const ContainerLogic = ()=>{
   const fetchActiveContainers = () =>{
     //get active containrs from server
     fetch("http://localhost:3001/container/startedContainers")
-    .then((response) => response.json)
+    .then((response) => response.json())
     .then((data) =>{
-        setContainers(data);
+        setActiveContainer(data);
     })
     .catch((error) => {
         console.error("Error get active containers:", error);
@@ -28,8 +28,8 @@ const ContainerLogic = ()=>{
 
   const fetchAvailableImages = () =>{
     //get the images from docker hub
-    fetch("http://localhost:3001/")
-    .then((response) => response)
+    fetch("http://localhost:3001//Docker_images/")
+    .then((response) => response())
     .then((data) =>{
         setImages(data);
     })
@@ -39,8 +39,8 @@ const ContainerLogic = ()=>{
   };
  
   const handleCreateContainer = () => {
-    // Create a new container using the selected image
-    fetch("http://localhost:3001/", {
+  
+    fetch("http://localhost:3001/container/New", {
       method: "POST",
       body: JSON.stringify({ image: selectedImage }),
       headers: {
@@ -59,7 +59,7 @@ const ContainerLogic = ()=>{
   };
   const handleStartContainer = (containerId) => {
     
-    fetch(`http://localhost:3001/container${containerId}/start`, {
+    fetch("http://localhost:3001/container/${containerId}/start", {
       method: "POST",
     })
       .then((response) => response.json())
@@ -73,7 +73,7 @@ const ContainerLogic = ()=>{
   };
   const handleStopContainer = (containerId) => {
     
-    fetch(`http://localhost:3001/${containerId}/stop`, {
+    fetch("http://localhost:3001/container/${containerId}/stop", {
       method: "POST",
     })
       .then((response) => response.json())
